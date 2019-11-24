@@ -1,6 +1,11 @@
 package ua.edu.ucu.autocomplete;
 
 import ua.edu.ucu.tries.Trie;
+import ua.edu.ucu.tries.Tuple;
+
+import java.util.ArrayList;
+import java.util.Collections;
+
 
 /**
  *
@@ -11,30 +16,62 @@ public class PrefixMatches {
     private Trie trie;
 
     public PrefixMatches(Trie trie) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        this.trie = trie;
     }
 
     public int load(String... strings) {
-        throw new UnsupportedOperationException("Not supported yet.");        
+        int counter = 0;
+        for (int i = 0; i < strings.length; i++) { //String str : strings) {
+            String[] words =  strings[i].split("\\s");
+            for (int j = 0; j < words.length; j++) {//(String word : words) {
+                trie.add(new Tuple(words[j].toLowerCase(), words[j].length()));
+                counter ++;
+            }
+        }
+        return counter;
     }
 
     public boolean contains(String word) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return trie.contains(word);
     }
 
     public boolean delete(String word) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return trie.delete(word);
     }
 
     public Iterable<String> wordsWithPrefix(String pref) {
-        throw new UnsupportedOperationException("Not supported yet.");        
+        if (pref.length() >= 2) {
+            return trie.wordsWithPrefix(pref);
+        }
+        else {
+            return Collections::emptyIterator;
+        }
+
     }
 
     public Iterable<String> wordsWithPrefix(String pref, int k) {
-        throw new UnsupportedOperationException("Not supported yet.");        
-    }
+        if (pref.length() >= 2) {
+            ArrayList<String> toReturn = new ArrayList<>();
+            int lengths_number = 0;
+            int curr_len = 0;
+            for (String word : wordsWithPrefix(pref)) {
+               if (curr_len != word.length()){
+                   lengths_number++;
+                   curr_len = word.length();
+               }
+               if (lengths_number > k){
+                   break;
+               }
+               toReturn.add(word);
 
+            }
+            return toReturn;
+        }
+        else {
+            return Collections::emptyIterator;
+        }
+    }
     public int size() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return trie.size();
     }
 }
