@@ -55,15 +55,16 @@ public class PrefixMatches {
             int lengths_number = 0;
             int curr_len = 0;
             for (String word : wordsWithPrefix(pref)) {
-               if (curr_len != word.length()){
-                   lengths_number++;
-                   curr_len = word.length();
-               }
-               if (lengths_number > k){
-                   break;
-               }
-               toReturn.add(word);
-
+                if (word.length() >= 3) {
+                    if (curr_len != word.length()) {
+                        lengths_number++;
+                        curr_len = word.length();
+                    }
+                    if (lengths_number > k) {
+                        break;
+                    }
+                    toReturn.add(word);
+                }
             }
             return toReturn;
         }
